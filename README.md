@@ -1,5 +1,4 @@
 # ScreenshotBot
-# ScreenshotBot
 
 ScreenshotBot is a lightweight C# console application that runs silently in the background and captures full-screen screenshots at regular intervals.
 
