@@ -1,23 +1,18 @@
 ﻿using ScreenshotBot.Services;
-using System;
-using System.IO;
 using System.Timers;
+using System.Threading;
+using System.IO;
+using System;
 
-string outputFolder = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
+string outputFolder = Path.Combine(AppContext.BaseDirectory, "Screenshots");
 Directory.CreateDirectory(outputFolder);
 
 int intervalSeconds = 10;
-
-Console.WriteLine("🟢 ScreenshotBot avviato.");
-Console.WriteLine($"Ogni {intervalSeconds} secondi verrà catturato uno screenshot.");
-Console.WriteLine("Premi INVIO per fermare il bot.\n");
 
 System.Timers.Timer timer = new(intervalSeconds * 1000);
 timer.Elapsed += (sender, e) => ScreenshotService.CaptureScreenshot(outputFolder);
 timer.Start();
 
-Console.ReadLine();
-
-Console.WriteLine("🛑 Bot fermato. Uscita...");
-timer.Stop();
-timer.Dispose();
+// Blocca il processo finché non viene terminato esternamente (es. Task Manager)
+var quitEvent = new ManualResetEvent(false);
+quitEvent.WaitOne();
